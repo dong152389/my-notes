@@ -11,7 +11,7 @@ jobs:  # 工作流程中的任务
 
     strategy:  # 构建策略
       matrix:  # 构建矩阵
-        node-version: [16]  # 使用的 Node.js 版本
+        node-version: [14.17.0]  # 使用的 Node.js 版本
 
     steps:  # 任务中的步骤
       - uses: actions/checkout@v3  # 使用 GitHub Action 来检出代码
