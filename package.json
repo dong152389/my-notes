@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": false,
   "scripts": {
-    "dev": "vuepress dev",
-    "build": "vuepress build"
+    "dev": "npm run dev",
+    "build": "npm run build"
   },
   "devDependencies": {
     "@vuepress/plugin-back-to-top": "^1.8.0",
