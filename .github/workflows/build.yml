@@ -1,31 +1,35 @@
-name: Build
+name: Build  # 工作流程的名称
 
-on:
-  push:
-    branches:
-      - master
+on:  # 触发工作流程的事件
+  push:  # 当有推送到仓库时
+    branches: ["master"]  # 只有推送到 master 分支时才触发
+  workflow_dispatch:  # 允许手动触发此工作流程
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+jobs:  # 工作流程中的任务
+  build:  # 任务的名称
+    runs-on: ubuntu-latest  # 任务运行的环境
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
+    strategy:  # 构建策略
+      matrix:  # 构建矩阵
+        node-version: [18]  # 使用的 Node.js 版本
 
-      - name: Install dependencies
-        run: npm install
+    steps:  # 任务中的步骤
+      - uses: actions/checkout@v3  # 使用 GitHub Action 来检出代码
 
-      - name: Build project
-        run: npm run Build
+      - name: Use Node.js  # 步骤的名称
+        uses: actions/setup-node@v3  # 使用 GitHub Action 来设置 Node.js 环境
+        with:  # 步骤的参数
+          node-version: ${{ matrix.node-version }}  # 使用构建矩阵中定义的 Node.js 版本
 
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.0
-        with:
-          branch: gh-pages
-          folder: build
+      - name: Install dependencies  # 步骤的名称
+        run: npm install  # 运行命令来安装依赖
+
+      - name: Build project  # 步骤的名称
+        run: npm run build  # 运行命令来构建项目
+
+      - name: Deploy to GitHub Pages  # 步骤的名称
+        uses: JamesIves/github-pages-deploy-action@v4  # 使用 GitHub Action 来部署到 GitHub Pages
+        with:  # 步骤的参数
+          branch: gh-pages  # 部署的分支
+          folder: docs/.vuepress/dist  # 部署的文件夹
+          token: ${{ secrets.ACCESS_TOKEN }}  # 使用的访问令牌
